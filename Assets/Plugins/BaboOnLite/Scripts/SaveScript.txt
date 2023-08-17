@@ -1,0 +1,11 @@
+using UnityEngine;
+namespace BaboOnLite
+{
+    public partial class SaveScript
+    {
+        //----------------------------------------------------------------//
+        //Declara las variables publicas que nesecites//
+        //----------------------------------------------------------------//
+
+    }
+}
