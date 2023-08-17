@@ -1,0 +1,57 @@
+# Unity generated
+/LIB/[Ll]ibrary/
+/LIB/[Tt]emp/
+/LIB/[Oo]bj/
+/LIB/[Bb]uild/
+/LIB/[Bb]uilds/
+/LIB//Assets/AssetStoreTools*
+
+# Visual Studio / MonoDevelop generated
+/*.pidb
+/*.userprefs
+/*.csproj
+/*.pidb.meta
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+
+# Gradle
+/LIB/gradle/
+/LIB/gradlew
+/LIB/gradlew.bat
+
+# Mac
+*.DS_Store
+
+# Backups
+*~.nib
+*.swp
+*~
+*.tmp
+*.bak
+*.cache
+*.log
+*.zip
+*.vscode/
+*.sln.cache
+.vs/
+
+# Unity3D generated meta files
+*.pidb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Ignore the Escenas folder inside Assets
+/LIB/Assets/Escenas/
+/LIB/Assets/Escenas.meta
+
+/LIB/Packages
+/LIB/ProjectSettings
+/LIB/UserSettings
+/LIB/.vsconfig
+/LIB/Assembly-CSharp.csproj
+/LIB/LIB.sln
+/LIB/Assembly-CSharp-Editor.csproj
