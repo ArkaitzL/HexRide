@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BaboOnLite
 {
@@ -34,22 +35,42 @@ namespace BaboOnLite
             Instance();
         }
 
-        //Crea sonidos de una sola vez. Puedes elegir que sonidos y en que posicion
-        public AudioSource Audio(string sonido, Vector3 posicion = default(Vector3), bool bucle = false)
-        {
-            return Creator(sonido, posicion, bucle);
+        //Añade el sonido a los botones
+        public void Boton(string sonido, float volumen = 1) {
+            //Sonido botones
+            Controlador.Rutina(.1f, () => {
+
+                Button[] botones = FindObjectsOfType<Button>(includeInactive: true);
+                botones.ForEach((boton) => {
+                    boton.onClick.AddListener(() => Audio(sonido, volumen));
+                });
+
+            });
         }
-        public AudioSource[] Audio(string[] sonido, Vector3 posicion = default(Vector3), bool bucle = false)
+
+        //Destruye todos los sonidos
+        public void Destruir() {
+            for (int i = 0; i < transform.childCount; i++) {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
+
+        //Crea sonidos de una sola vez. Puedes elegir que sonidos y en que posicion
+        public AudioSource Audio(string sonido, float volumen = 1, bool bucle = false, Vector3 posicion = default(Vector3))
+        {
+            return Creator(sonido, posicion, bucle, volumen);
+        }
+        public AudioSource[] Audio(string[] sonido, float volumen = 1, bool bucle = false, Vector3 posicion = default(Vector3))
         {
             List<AudioSource> miSounds = new List<AudioSource>();
             sonido.ForEach((i) => {
-                miSounds.Add(Creator(i, posicion, bucle));
+                miSounds.Add(Creator(i, posicion, bucle, volumen));
             });
             return miSounds.ToArray();
         }
 
         //Crea todos los sonidos
-        AudioSource Creator(string s, Vector3 p, bool loop = false) {
+        AudioSource Creator(string s, Vector3 p, bool loop = false, float volumen = 1) {
             if (!Save.Data.mute)
             {
                 if (!sonidos.Inside(s))
@@ -64,13 +85,16 @@ namespace BaboOnLite
 
                 AudioSource audioSource = soundInstance.AddComponent<AudioSource>();
                 audioSource.clip = sonidos.Get(s);
+                audioSource.volume = volumen;
 
                 if (loop) audioSource.loop = true;
                 soundInstance.transform.position = p;
 
                 audioSource.Play();
 
-                Destroy(soundInstance, 5f);
+                if (!loop) {
+                    Destroy(soundInstance, 10f);
+                }
                 return audioSource;
             }
             return null;

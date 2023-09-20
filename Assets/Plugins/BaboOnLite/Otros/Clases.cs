@@ -82,10 +82,11 @@ namespace BaboOnLite
             });
             return dentro;
         }
-        public bool Inside(int indice)
-        {
+        public bool Inside(int indice) {
             return (indice >= 0 && indice < data.Count);
         }
+
+        public List<Elementos> ToList() => data;
     }
 
 

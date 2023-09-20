@@ -119,7 +119,10 @@ public partial class Generador {
 
     private void Textura(Transform trans) {
         //Cambia la textura a los objetos mediante los tags
-        string[] texturas = { "Muerte", "Salto", "Rampa", "Plataforma" };
+        List<string> texturas = new List<string>();
+        mundo.texturas.ToList().ForEach((element) => {
+            texturas.Add(element.indice);
+        });
 
         texturas.ForEach((textura) => {
             if (trans.CompareTag(textura))

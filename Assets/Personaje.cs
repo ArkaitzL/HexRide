@@ -3,7 +3,6 @@ using UnityEngine;
 
 public partial class Personaje {
     [SerializeField] private float velocidad, limiteVelocidad;
-
     private Rigidbody rb;
 }
 public partial class Personaje : MonoBehaviour {
@@ -32,11 +31,23 @@ public partial class Personaje : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if (collision.transform.CompareTag("Muerte")){
             MenuJuego.data.Muerte(true);
+
+            if (Controlador.Esperando("Impacto"))  {
+                Sonidos.get.Audio("Impacto", 1f);
+                Controlador.IniciarEspera("Impacto", .5f);
+            }
+               
         }
     }
     private void OnTriggerEnter(Collider other) {
         if (other.transform.CompareTag("Caida")) {
             MenuJuego.data.Muerte(false);
+
+            if (Controlador.Esperando("Caida")) {
+                Sonidos.get.Audio("Caida", .3f);
+                Controlador.IniciarEspera("Caida", .5f);
+            }
+         
         }
         //Detecta la colicion contra el detector
         //(El encargado de saber si pasas de fragmento)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace BaboOnLite
 {
@@ -26,10 +27,11 @@ namespace BaboOnLite
         public delegate Coroutine C7(Image t, Color c, float duracion);
         public delegate Coroutine C8(Camera t, Color c, float duracion);
         public delegate Coroutine C9(Renderer t, Color c, float duracion);
+        public delegate Coroutine C10(TextMeshProUGUI t, Color c, float duracion);
 
         //Rotacion
-        public delegate void C10(string nombre, float duracion);
-        public delegate bool C11(string nombre);
+        public delegate void C11(string nombre, float duracion);
+        public delegate bool C12(string nombre);
 
         public static C1 Rutina;
         public static C2 Mover;
@@ -40,8 +42,9 @@ namespace BaboOnLite
         public static C7 ColorImage;
         public static C8 ColorCamara;
         public static C9 ColorRender;
-        public static C10 IniciarEspera;
-        public static C11 Esperando;
+        public static C10 ColorText;
+        public static C11 IniciarEspera;
+        public static C12 Esperando;
 
         //Variables privadas------------------------------------------
         private Trans moviendo = new Trans();
@@ -61,6 +64,7 @@ namespace BaboOnLite
             ColorImage = color;
             ColorCamara = color;
             ColorRender = color;
+            ColorText = color;
             IniciarEspera = iniciarEspera;
             Esperando = esperando;
         }
@@ -190,7 +194,7 @@ namespace BaboOnLite
         }
         #endregion
 
-        //Color---------------------------------------------------
+        //Color------------------------------------------------------
         #region color
         private Coroutine color<T>(T f, Color c, float duracion) { //LLAMADA
             return StartCoroutine(ColorCorrutina(
@@ -208,6 +212,7 @@ namespace BaboOnLite
             if (f is SpriteRenderer sprite1) c1 = sprite1.color;
             if (f is Image color1) c1 = color1.color;
             if (f is Renderer render1) c1 = render1.material.color;
+            if (f is TextMeshProUGUI text1) c1 = text1.color;
 
             while (tiempoTotal < duracion)
             {
@@ -219,6 +224,7 @@ namespace BaboOnLite
                 if (f is SpriteRenderer sprite2) sprite2.color = c;
                 if (f is Image color2) color2.color = c;
                 if (f is Renderer render2) render2.material.color = c;
+                if (f is TextMeshProUGUI text2) text2.color = c;
 
                 yield return null;
                 tiempoTotal += Time.deltaTime;
@@ -228,6 +234,7 @@ namespace BaboOnLite
             if (f is SpriteRenderer finalSprite) finalSprite.color = c2;
             if (f is Image finalImage) finalImage.color = c2;
             if (f is Renderer finalRender) finalRender.material.color = c2;
+            if (f is TextMeshProUGUI finalText) finalText.color = c2;
         }
 
         private Color DarColor(Color c1, Color c2, float duracion) { 
@@ -240,7 +247,7 @@ namespace BaboOnLite
 
         #endregion
 
-        //Espera---------------------------------------------------
+        //Espera-----------------------------------------------------
         #region espera
         private void iniciarEspera(string nombre, float duracion) {
             espera[nombre] = false;
@@ -255,5 +262,43 @@ namespace BaboOnLite
             return espera[nombre];
         }
         #endregion
+
     }
+
+    //Instancia--------------------------------------------------
+    #region
+    public class Instanciar<T> : MonoBehaviour
+    {
+        private static Dictionary<string, T> instancias = new Dictionary<string, T>();
+
+        public static void Añadir(string nombre, T instancia, GameObject objeto = null, bool global = false)
+        {
+
+            if (instancias.Some((i) => EqualityComparer<T>.Default.Equals(instancia, i.Value)))
+            {
+                Debug.LogWarning("Ya tienes un objeto igual guardado");
+            }
+
+
+            if (instancias.Every((element) => nombre != element.Key))
+            {
+                if (global)
+                {
+                    DontDestroyOnLoad(objeto);
+                }
+                instancias.Add(nombre, instancia);
+            }
+            else
+            {
+                Debug.LogWarning("Ya tienes un objeto con ese nombre");
+                Destroy(objeto);
+            }
+        }
+
+        public static T Coger(string nombre)
+        {
+            return instancias[nombre];
+        }
+    }
+    #endregion
 }

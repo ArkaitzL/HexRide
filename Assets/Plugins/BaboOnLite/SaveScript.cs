@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 namespace BaboOnLite
 {
@@ -9,6 +10,10 @@ namespace BaboOnLite
         //----------------------------------------------------------------//
         public int language = 0;
         public bool mute = false;
+        public Dictionary<string, int> skins = new Dictionary<string, int>();
+
         public int mundo = 0; //En quemundoe estas
+        public int record = 0; //La puntuacion maxima que ha conseguido
+
     }
 }
